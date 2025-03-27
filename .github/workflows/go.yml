@@ -5,25 +5,23 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
 
-      - name: Build
-        run: go build -o revsocks
+    - name: Build for Windows
+      run: GOOS=windows GOARCH=amd64 go build -o revsocks.exe  # Windows client
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4  # 🔁 заменили v3 на v4
-        with:
-          name: revsocks-binary
-          path: revsocks
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: revsocks-windows
+        path: revsocks.exe
