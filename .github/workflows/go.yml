@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]  # Изменено с "master" на "main"
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]  # Изменено с "master" на "main"
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
         go-version: '1.20'
 
     - name: Build
-      run: go build -o revsocks  # Указываем имя выходного файла
+      run: go build -o revsocks
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
