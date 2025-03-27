@@ -1,0 +1,27 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]  # Изменено с "master" на "main"
+  pull_request:
+    branches: [ "main" ]  # Изменено с "master" на "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build
+      run: go build -o revsocks  # Указываем имя выходного файла
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: revsocks-binary
+        path: revsocks
