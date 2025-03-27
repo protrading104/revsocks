@@ -1,27 +1,30 @@
-name: Go
+name: Build revsocks Windows Client
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
 
-    - name: Build for Windows
-      run: GOOS=windows GOARCH=amd64 go build -o revsocks.exe
+      - name: Build revsocks.exe
+        run: |
+          GOOS=windows GOARCH=amd64 go build -o revsocks.exe
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: revsocks-windows
-        path: revsocks.exe
+      - name: Upload revsocks.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: revsocks-windows
+          path: revsocks.exe
