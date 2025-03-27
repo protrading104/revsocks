@@ -88,8 +88,6 @@ func WSconnectForSocks(verify bool, address string, proxy string) error {
 			},
 		}
 
-		// resp, err := http.Get(wsURL)
-		// resp, err := httpClient.Get(wsURL)
 		req, err := http.NewRequest("GET", wsURL, nil)
 		if err != nil {
 			log.Printf("error creating http request to %s: %s\n", wsURL, err)
@@ -147,7 +145,6 @@ func WSconnectForSocks(verify bool, address string, proxy string) error {
 		} else {
 			log.Printf("Unknown http response code: %d", resp.StatusCode)
 		}
-
 	}
 
 	// Connect to the WebSocket endpoint via the proxy
@@ -174,7 +171,7 @@ func WSconnectForSocks(verify bool, address string, proxy string) error {
 		stream, err := session.Accept()
 		if err != nil {
 			fmt.Println("Error accepting stream:", err)
-			continue
+			return err // Изменено: возвращаем ошибку вместо continue
 		}
 		log.Println("Accepted stream")
 		go func() {
@@ -184,7 +181,6 @@ func WSconnectForSocks(verify bool, address string, proxy string) error {
 			}
 		}()
 	}
-	return nil
 }
 
 func mustParseURL(u string) *url.URL {
@@ -275,15 +271,6 @@ func connectviaproxy(tlsenable bool, proxyaddress string, connectaddr string) ne
 				log.Print("Got NTLM challenge:")
 				log.Print(ntlmchall)
 			}
-
-			/*
-				negstring:= fmt.Sprintf("NTLM %s", base64.StdEncoding.EncodeToString(negotiateMessage))
-				connectproxystring = "CONNECT " + connectaddr + " HTTP/1.1" + "\r\nHost: " + connectaddr +
-					"\r\nUser-Agent: "+useragent+
-					"\r\nProxy-Authorization: " + negstring +
-					"\r\nProxy-Connection: Keep-Alive" +
-					"\r\n\r\n"
-			*/
 
 			ntlmchall = ntlmchall[5:]
 			if socksdebug {
